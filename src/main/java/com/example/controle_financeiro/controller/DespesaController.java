@@ -1,5 +1,6 @@
 package com.example.controle_financeiro.controller;
 
+import com.example.controle_financeiro.dto.DespesasDTO;
 import com.example.controle_financeiro.model.Despesa;
 import com.example.controle_financeiro.repository.DespesaRepository;
 import com.example.controle_financeiro.service.DespesaService;
@@ -22,14 +23,28 @@ public class DespesaController {
     private DespesaRepository despesaRepository;
 
     @GetMapping("/all")
-    public ResponseEntity lista(){
-        List<Despesa> despesas =  despesaRepository.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(despesas);
+    public List<DespesasDTO> lista(){
+        return despesaService.listarTodas();
+    }
+
+    // Listar despesas de um usuário específico
+    @GetMapping("/usuario/{userId}")
+    public List<DespesasDTO> listarPorUsuario(@PathVariable Long userId) {
+        return despesaService.listarPorUser(userId);
     }
 
     @PostMapping("/register")
-    public Despesa save(@RequestBody Despesa despesa) {
+    public DespesasDTO save(@RequestBody DespesasDTO despesa) {
         return despesaService.save(despesa);
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
+        despesaService.deleteDespesa(id);
+        return ResponseEntity.noContent().build();
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleNotFound(Exception ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
 }
