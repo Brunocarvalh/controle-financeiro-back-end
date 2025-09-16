@@ -1,4 +1,4 @@
-package model;
+package com.example.controle_financeiro.model;
 
 
 import jakarta.persistence.*;
