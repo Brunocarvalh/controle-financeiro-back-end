@@ -5,11 +5,10 @@ import com.example.controle_financeiro.dto.UserDto;
 import com.example.controle_financeiro.exception.UserExistente;
 import com.example.controle_financeiro.model.User;
 import com.example.controle_financeiro.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.net.UnknownServiceException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +29,6 @@ public class UserService {
             user.setNome(userDto.getNome());
             user.setEmail(userDto.getEmail());
             user.setSenha(userDto.getSenha());
-            user.setSalario(userDto.getSalario());
             User salvo = userRepository.save(user);
 
             return toDTO(salvo);
@@ -49,12 +47,12 @@ public class UserService {
         dto.setNome(user.getNome());
         dto.setEmail(user.getEmail());
         dto.setSenha(user.getSenha());
-        dto.setSalario(user.getSalario());
+
         // se quiser retornar despesas do usuário
         if (user.getDespesas() != null) {
             List<DespesasDTO> despesasDTO = user.getDespesas().stream().map(d -> {
                 DespesasDTO dd = new DespesasDTO();
-                dd.setUserId(d.getId());
+                dd.setId(d.getId());
                 dd.setNome(d.getNome());
                 dd.setDescription(d.getDescription());
                 dd.setValue(d.getValue());

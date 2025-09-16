@@ -9,6 +9,7 @@ import com.example.controle_financeiro.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -28,7 +29,7 @@ public class DespesaService {
 
     public DespesasDTO save(DespesasDTO despesaDto) {
         User user = userRepository.findById(despesaDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
         Despesa despesa = new Despesa();
         despesa.setNome(despesaDto.getNome());
         despesa.setDescription(despesaDto.getDescription());
@@ -54,10 +55,15 @@ public class DespesaService {
                 .collect(Collectors.toList());
     }
 
+    public Optional<DespesasDTO> findById(Long id) {
+        return despesaRepository.findById(id)
+                .map(DespesasDTO::new);
+    }
+
     // Conversão de Entity -> DTO
     private DespesasDTO toDTO(Despesa despesa) {
         DespesasDTO dto = new DespesasDTO();
-        dto.setUserId(despesa.getId());
+        dto.setId(despesa.getId());
         dto.setNome(despesa.getNome());
         dto.setDescription(despesa.getDescription());
         dto.setValue(despesa.getValue());

@@ -1,6 +1,5 @@
 package com.example.controle_financeiro.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +18,11 @@ public class User {
     private Long id;
 
     private String nome;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String senha;
     private double salario;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

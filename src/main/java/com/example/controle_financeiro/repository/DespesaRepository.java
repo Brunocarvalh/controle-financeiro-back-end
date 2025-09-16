@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface DespesaRepository extends JpaRepository<Despesa, Long> {
     List<Despesa> findByUserId(Long userId);
+    Despesa findDespesaById(Long id);
 }
