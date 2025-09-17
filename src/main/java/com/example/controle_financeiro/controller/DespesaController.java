@@ -1,6 +1,7 @@
 package com.example.controle_financeiro.controller;
 
 import com.example.controle_financeiro.dto.DespesasDTO;
+import com.example.controle_financeiro.dto.UserDto;
 import com.example.controle_financeiro.repository.DespesaRepository;
 import com.example.controle_financeiro.service.DespesaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,16 @@ public class DespesaController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleNotFound(Exception ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<DespesasDTO>  update(@PathVariable Long id, @RequestBody DespesasDTO despesaDTO) {
+        try{
+            DespesasDTO atualizado = despesaService.updateDespesa(id, despesaDTO);
+            return ResponseEntity.ok(atualizado);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
 }

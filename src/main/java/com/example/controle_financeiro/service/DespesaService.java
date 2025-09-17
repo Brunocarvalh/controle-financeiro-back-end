@@ -81,4 +81,15 @@ public class DespesaService {
         }
     }
 
+    public DespesasDTO updateDespesa(Long id, DespesasDTO despesaDto) throws Exception {
+        Despesa despesa = despesaRepository.findById(id)
+                .orElseThrow(() -> new Exception("Despesa com ID " + id + " não cadastrada!"));
+        despesa.setNome(despesaDto.getNome());
+        despesa.setDescription(despesaDto.getDescription());
+        despesa.setValue(despesaDto.getValue());
+        despesa.setDataDespesa(despesaDto.getDataDespesa());
+        Despesa salva =  despesaRepository.save(despesa);
+        return  toDTO(salva);
+    }
+
 }

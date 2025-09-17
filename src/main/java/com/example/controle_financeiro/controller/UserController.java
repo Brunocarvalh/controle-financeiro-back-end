@@ -2,6 +2,7 @@ package com.example.controle_financeiro.controller;
 
 
 import com.example.controle_financeiro.dto.UserDto;
+import com.example.controle_financeiro.model.User;
 import com.example.controle_financeiro.repository.UserRepository;
 import com.example.controle_financeiro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,13 @@ public class UserController {
 
     //Listar todas os usuarios.
     @GetMapping("/get")
-    public List<UserDto> getUser(){
+    public List<UserDto> getUser() {
         return userService.listar();
     }
 
     //Inserir um novo usuário
     @PostMapping("/insert")
-    public ResponseEntity<ApiResponse> insertUser(@RequestBody UserDto userDto){
+    public ResponseEntity<ApiResponse> insertUser(@RequestBody UserDto userDto) {
         userService.save(userDto);
         return ResponseEntity.ok(new ApiResponse(true, "Usuário " + userDto.getNome() + " cadastrado com sucesso!!"));
     }
@@ -49,4 +50,19 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<UserDto>  updateUser(@PathVariable Long id, @RequestBody UserDto userDto) throws Exception {
+        try{
+            UserDto atualizado = userService.updateUser(id, userDto);
+            return ResponseEntity.ok(atualizado);
+        }catch(Exception ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PostMapping("/salary")
+    public ResponseEntity<ApiResponse> salary(@RequestBody User user) throws Exception {
+        userService.insertSalary(user);
+        return ResponseEntity.ok(new ApiResponse(true, "Salario inserido", user.getSalario()));
+    }
 }

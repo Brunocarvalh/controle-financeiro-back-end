@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+
 @Service
 public class UserService {
 
     UserRepository userRepository;
-
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -67,6 +68,16 @@ public class UserService {
         return dto;
     }
 
+    public UserDto updateUser(Long id, UserDto userDto) throws Exception {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new Exception("Usuário com ID  " + id + " não encontrado"));
+        user.setNome(userDto.getNome());
+        user.setEmail(userDto.getEmail());
+        user.setSenha(userDto.getSenha());
+        User salvo = userRepository.save(user);
+        return toDTO(salvo);
+    }
+
     public void deleteUser(Long id) throws Exception {
         if(!userRepository.existsById(id)){
             throw new Exception("Usuario com Id " + id + " não encontrado");
@@ -74,5 +85,14 @@ public class UserService {
             userRepository.deleteById(id);
         }
     }
+
+    public void insertSalary(User user) throws Exception {
+        User usuario = userRepository.findById(user.getId())
+                .orElseThrow( ()-> new Exception("Usuário com ID " + " não encontrado"));
+        usuario.setSalario(user.getSalario());
+        User salvo = userRepository.save(usuario);
+    }
+
+
 
 }
