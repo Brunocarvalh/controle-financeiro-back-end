@@ -28,7 +28,39 @@ Inclui documentação automática com **Swagger/OpenAPI**.
 - Integração com banco de dados PostgreSQL.
 
 ---
+## Endpoints
 
+Cadastro de Usuários
+
+````bash
+localhost:8080
+````
+
+## POST
+```bash
+/user/insert
+```
+```
+{
+  "id": 0,
+  "nome": "string",
+  "email": "string",
+  "senha": "string",
+  "despesas": [
+    {
+      "id": 0,
+      "nome": "string",
+      "description": "string",
+      "value": 0.1,
+      "dataDespesa": "2025-09-18",
+      "userId": 0
+    }
+  ]
+}
+```
+
+
+---
 ## ⚙️ Configuração do Ambiente
 
 ### 1. Clonar o repositório
