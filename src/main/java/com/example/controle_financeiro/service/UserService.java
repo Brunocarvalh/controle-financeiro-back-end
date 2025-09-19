@@ -1,6 +1,5 @@
 package com.example.controle_financeiro.service;
 
-import com.example.controle_financeiro.dto.DespesasDTO;
 import com.example.controle_financeiro.dto.UserDto;
 import com.example.controle_financeiro.exception.UserExistente;
 import com.example.controle_financeiro.model.User;

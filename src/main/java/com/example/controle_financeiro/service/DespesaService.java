@@ -8,8 +8,8 @@ import com.example.controle_financeiro.repository.DespesaRepository;
 import com.example.controle_financeiro.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -55,8 +55,8 @@ public class DespesaService {
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
-    //Listar Despesa por ID.
- /*   public Optional<DespesasDTO> findById(Long id) {
+    /*Listar Despesa por ID.
+    public Optional<DespesasDTO> findById(Long id) {
         return despesaRepository.findById(id)
                 .map(DespesasDTO::new);
     }*/
@@ -105,4 +105,10 @@ public class DespesaService {
 
         return receita - despesa;
     }
+
+    public List<DespesasDTO> filterByDataCompra(Long id, LocalDate dataInicio, LocalDate dataFim) {
+        return despesaRepository.findByDataDespesaBetweenAndUser_Id(dataInicio, dataFim, id).stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+
 }

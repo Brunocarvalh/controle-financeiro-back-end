@@ -2,7 +2,6 @@ package com.example.controle_financeiro.controller;
 
 import com.example.controle_financeiro.dto.UserDto;
 import com.example.controle_financeiro.model.User;
-import com.example.controle_financeiro.repository.UserRepository;
 import com.example.controle_financeiro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +15,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserRepository userRepository;
-    private final UserService userService;
+    private  UserService userService;
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -26,13 +24,13 @@ public class UserController {
     public List<UserDto> getUser() {
         return userService.listar();
     }
-    //Inserir um novo usuário
+    //Inserir um novo usuario
     @PostMapping("/insert")
     public ResponseEntity<ApiResponse> insertUser(@RequestBody UserDto userDto) {
         userService.save(userDto);
         return ResponseEntity.ok(new ApiResponse(true, "Usuário " + userDto.getNome() + " cadastrado com sucesso!!"));
     }
-    //Deletar um usuário
+    //Deletar um usuario
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deletarUser(@PathVariable Long id) throws Exception {
         userService.deleteUser(id);

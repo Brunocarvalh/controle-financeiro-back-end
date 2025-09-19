@@ -2,11 +2,14 @@ package com.example.controle_financeiro.controller;
 
 import com.example.controle_financeiro.dto.DespesasDTO;
 
+
 import com.example.controle_financeiro.service.DespesaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 import java.util.List;
 
@@ -22,13 +25,13 @@ public class DespesaController {
     public List<DespesasDTO> listarTodas(){
         return despesaService.listarTodas();
     }
-    // Listar despesas de um usuário específico
+    // Listar despesas de um usuario específico
     @GetMapping("/usuario/{userId}")
     public List<DespesasDTO> listarDespesaPorUsuario(@PathVariable Long userId) {
         return despesaService.listarPorUser(userId);
     }
-    //Listar despesa especifica
-/*    @GetMapping("/{id}")
+    /*Listar despesa especifica
+        @GetMapping("/{id}")
     public ResponseEntity<?> findDespesaById(@PathVariable Long id){
         Optional<DespesasDTO> dto = despesaService.findById(id);
         if(dto.isEmpty()){
@@ -66,5 +69,15 @@ public class DespesaController {
     public ResponseEntity<ApiResponse> getSaldo(@PathVariable Long id){
         despesaService.getSaldo(id);
         return ResponseEntity.ok(new ApiResponse(true, "Saldo", despesaService.getSaldo(id)));
+    }
+
+    @GetMapping("/filter/{id}")
+    public ResponseEntity<List<DespesasDTO>> filterByDataDespesa(@PathVariable Long id, @RequestParam LocalDate dataInicio, @RequestParam LocalDate dataFim) {
+        try{
+            List<DespesasDTO> despesaFiltrada = despesaService.filterByDataCompra(id, dataInicio, dataFim);
+            return ResponseEntity.status(HttpStatus.OK).body(despesaFiltrada);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }
