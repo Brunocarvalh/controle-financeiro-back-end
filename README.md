@@ -10,7 +10,7 @@ Inclui documentação automática com **Swagger/OpenAPI**.
 - Java 21  
 - Spring Boot  
 - Spring Data JPA  
-- PostgreSQL  
+- PostgreSQL 13.21
 - Swagger (Springdoc OpenAPI)  
 
 ---
