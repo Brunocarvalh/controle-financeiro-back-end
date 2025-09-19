@@ -18,16 +18,17 @@ public class DespesaService {
     DespesaRepository despesaRepository;
     UserRepository userRepository;
 
+    //Constructor
     public DespesaService(DespesaRepository despesaRepository, UserRepository userRepository) {
         this.despesaRepository = despesaRepository;
         this.userRepository = userRepository;
     }
-
+    /*    Listar todas as despesas.
     public List<Despesa> findAll() {
         return despesaRepository.findAll();
-    }
-
-    public DespesasDTO save(DespesasDTO despesaDto) {
+    }*/
+    //Salvar Despesa
+    public DespesasDTO saveDespesa(DespesasDTO despesaDto) {
         User user = userRepository.findById(despesaDto.getUserId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
         Despesa despesa = new Despesa();
@@ -39,14 +40,14 @@ public class DespesaService {
         Despesa saved =  despesaRepository.save(despesa);
         return toDTO(saved);
     }
-
+    //Listar todas as despesas.
     public List<DespesasDTO> listarTodas() {
         return despesaRepository.findAll()
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
-
+    //Listar despesas por Usuário.
     public List<DespesasDTO> listarPorUser(Long userId) {
         return despesaRepository.findAll()
                 .stream()
@@ -54,13 +55,12 @@ public class DespesaService {
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
-
-    public Optional<DespesasDTO> findById(Long id) {
+    //Listar Despesa por ID.
+ /*   public Optional<DespesasDTO> findById(Long id) {
         return despesaRepository.findById(id)
                 .map(DespesasDTO::new);
-    }
-
-    // Conversão de Entity -> DTO
+    }*/
+    // Conversão de Entity DTO
     private DespesasDTO toDTO(Despesa despesa) {
         DespesasDTO dto = new DespesasDTO();
         dto.setId(despesa.getId());
@@ -71,7 +71,7 @@ public class DespesaService {
         dto.setUserId(despesa.getUser().getId());
         return dto;
     }
-
+    //Deletar despesa.
     public void deleteDespesa(Long id) throws Exception {
         if(!despesaRepository.existsById(id)){
             throw new Exception("Despesa com o Id " + id + " não existente");
@@ -80,7 +80,7 @@ public class DespesaService {
 
         }
     }
-
+    //Atualizar despesa.
     public DespesasDTO updateDespesa(Long id, DespesasDTO despesaDto) throws Exception {
         Despesa despesa = despesaRepository.findById(id)
                 .orElseThrow(() -> new Exception("Despesa com ID " + id + " não cadastrada!"));
@@ -92,4 +92,17 @@ public class DespesaService {
         return  toDTO(salva);
     }
 
+    public Double getSaldo(Long id) {
+        Double receita = userRepository.findById(id)
+                .stream()
+                .mapToDouble(User::getSalario)
+                .sum();
+
+        Double despesa = despesaRepository.findByUserId(id)
+                .stream()
+                .mapToDouble(Despesa::getValue)
+                .sum();
+
+        return receita - despesa;
+    }
 }
