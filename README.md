@@ -64,7 +64,8 @@ Corpo da requisição
 ```
 {
   "id": int,
-  "salario": double,
+  "salario": double
+}
 ```
 ---
 
